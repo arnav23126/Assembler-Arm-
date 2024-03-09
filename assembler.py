@@ -1,4 +1,5 @@
-#project decode
+#project decode final working 99% errorless dnd till monday from my side
+#if anyone has interest let me know can make a simulator version tomm
 def overwritebin():
     bincode=open('bineq.txt','+w')
     bincode.close()
