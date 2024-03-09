@@ -291,6 +291,7 @@ assembly=[]
 while (True):
     k=a.readline().strip('\n')
     if a.tell()==teller:
+        assembly.append(k)
         break
     if k.strip(' ')=='':
         continue 
