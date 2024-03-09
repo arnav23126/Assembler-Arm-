@@ -185,7 +185,6 @@ def flip(a):
         return "1";
     elif(a=="1"):
         return "0";
-
 def Cmp2(a):
     t="0"+a;
     s='';
@@ -200,7 +199,10 @@ def Cmp2(a):
         else:
             s=flip(t[i])+s;
     return s;
-   
+
+        
+            
+    
 def DecToBin(a):
     st="";
     temp=a;
@@ -211,15 +213,17 @@ def DecToBin(a):
         temp=temp//2;
     st=st[::-1];
     return st;
-
 def imm(num,ty):
     num=int(num);
     if(ty in ["0000011","0010011","1100111"]):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+11*"0";
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=12):
-            return '-1';
+            return -1;
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -236,8 +240,11 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+"0"*12;
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=13):
-            return '-1';
+            return -1;
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -260,8 +267,11 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+"0"*31;
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=32):
-            return '-1';
+            return -1;
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -277,8 +287,11 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+"0"*11;
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=12):
-            return '-1';
+            return -1;
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -294,8 +307,11 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+21*"0";
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=21):
-            return '-1';
+            return -1;
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
