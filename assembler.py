@@ -288,7 +288,7 @@ def imm(num,ty):
         t=t[0]+t[10:20]+t[9]+t[1:9];
         return t;
       
-fname='ascode.txt'
+fname=input('File Name: ')
 ascode=open(fname,'+r')
 assembly = ascode.readlines()
 ascode.close()
@@ -304,7 +304,7 @@ while(count!=len(assembly)):
     
     inst=[inst[0]]+inst[1].split(',')
     opco=opcode(inst[0])
-    print(inst)
+    #print(inst)
     if opco=='error':
         writebin('Invalid Instruction Name')
         break
