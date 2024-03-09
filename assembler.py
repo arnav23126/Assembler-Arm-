@@ -6,6 +6,34 @@ def overwritebin():
 def readinst(pc):
     temp=assembly[pc]
     return temp
+
+def the_ultimate_label_dealer_2point0(warninglabelhazard):
+    for i in range(0,len(warninglabelhazard)):
+        warninglabelhazard[i]=warninglabelhazard[i].lstrip()
+    dictlabels=dict()
+    for i in range(0,len(warninglabelhazard)):
+        if ':' in warninglabelhazard[i]:
+            labelname=''
+            for j in warninglabelhazard[i]:
+                if(j!=':'):
+                    labelname+=j
+                else:
+                    break
+            dictlabels[labelname]=i*4
+            warninglabelhazard[i]=warninglabelhazard[i][warninglabelhazard[i].index(':')+1:]
+    for i in range(0,len(warninglabelhazard)): #To remove the space if ther after a label
+        warninglabelhazard[i]=warninglabelhazard[i].lstrip()
+
+    for i in warninglabelhazard:
+        for j in dictlabels.keys():
+            if j in i:
+                ind=warninglabelhazard.index(i)
+                i=i.replace(j,str(dictlabels[j]-(ind*4)))
+                warninglabelhazard.pop(ind)
+                warninglabelhazard.insert(ind,i)
+            else:
+                continue
+    return warninglabelhazard
         
 def writebin(bineq):
     bincode=open('bineq.txt','+a')
@@ -298,6 +326,8 @@ while (True):
     else:
         assembly.append(k)
 a.close()
+
+assembly=the_ultimate_label_dealer_2point0(assembly)
 
 overwritebin()
 
