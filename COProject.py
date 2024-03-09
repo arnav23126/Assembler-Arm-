@@ -38,6 +38,9 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+11*"0";
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=12):
             return -1;
         if(Orig<0):
@@ -56,6 +59,9 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+"0"*12;
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=13):
             return -1;
         if(Orig<0):
@@ -80,6 +86,9 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+"0"*31;
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=32):
             return -1;
         if(Orig<0):
@@ -97,6 +106,9 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+"0"*11;
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=12):
             return -1;
         if(Orig<0):
@@ -114,6 +126,9 @@ def imm(num,ty):
         Orig=num;
         num=abs(num);
         t=DecToBin(num);
+        p="1"+21*"0";
+        if(Orig<0 and t==p):
+            return t;
         if(len(t)>=21):
             return -1;
         if(Orig<0):
