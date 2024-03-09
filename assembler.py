@@ -5,13 +5,7 @@ def overwritebin():
 
 def readinst(pc):
     temp=assembly[pc]
-    
-    if '\n' in temp and len(temp)<7:
-        global count
-        count+=1
-        return readinst(pc+1)
-    else:
-        return temp
+    return temp
         
 def writebin(bineq):
     bincode=open('bineq.txt','+a')
@@ -289,9 +283,20 @@ def imm(num,ty):
         return t;
       
 fname=input('File Name: ')
-ascode=open(fname,'+r')
-assembly = ascode.readlines()
-ascode.close()
+a=open(fname,'+a')
+teller=a.tell()
+a.close()
+a=open(fname,'+r')
+assembly=[]
+while (True):
+    k=a.readline().strip('\n')
+    if a.tell()==teller:
+        break
+    if k.strip(' ')=='':
+        continue 
+    else:
+        assembly.append(k)
+a.close()
 
 overwritebin()
 
@@ -309,7 +314,7 @@ while(count!=len(assembly)):
         writebin('Invalid Instruction Name')
         break
 
-    elif opco=='0110011':
+    if opco=='0110011':
         bineq=funct7(inst[0])+register_code(inst[3])+register_code(inst[2])+ funct3(inst[0])+register_code(inst[1])+opco
         if 'error'in bineq:
             writebin('Invalid Register Name')
@@ -317,7 +322,7 @@ while(count!=len(assembly)):
         else:
             writebin(bineq + '\n')
     
-    elif opco in ["0010011"]:
+    if opco in ["0010011"]:
         bineq=imm(inst[3],opco)+register_code(inst[2])+ funct3(inst[0])+register_code(inst[1])+opco
         if 'error'in bineq:
             writebin('Invalid Register Name')
@@ -328,7 +333,7 @@ while(count!=len(assembly)):
         else:
             writebin(bineq + '\n')
 
-    elif opco in ['1100111',"0000011"]:
+    if opco in ["0000011"]:
         t=inst[2].split('(')
         bineq=imm(t[0],opco)+register_code(t[1].strip(')'))+ funct3(inst[0])+register_code(inst[1])+opco
         if 'error'in bineq:
@@ -340,7 +345,18 @@ while(count!=len(assembly)):
         else:
             writebin(bineq + '\n')
     
-    elif opco in ['0100011']:
+    if opco in ['1100111']:
+        bineq=imm(inst[3],opco)+register_code(inst[2])+ funct3(inst[0])+register_code(inst[1])+opco
+        if 'error'in bineq:
+            writebin('Invalid Register Name')
+            break
+        elif '-1'in bineq:
+            writebin('Invalid Imm Value')
+            break
+        else:
+            writebin(bineq + '\n')
+    
+    if opco in ['0100011']:
         t=inst[2].split('(')
         x,y=imm(t[0],opco)
         bineq=x+register_code(inst[1])+register_code(t[1].strip(')'))+ funct3(inst[0])+y+opco
@@ -353,7 +369,7 @@ while(count!=len(assembly)):
         else:
             writebin(bineq + '\n')
 
-    elif opco in ["1100011"] and inst!=['beq',"zero","zero","0"]:
+    if opco in ["1100011"] and inst!=['beq',"zero","zero","0"]:
         x,y=imm(inst[3],opco)
         bineq=x+register_code(inst[2])+register_code(inst[1])+ funct3(inst[0])+y+opco
         if 'error'in bineq:
@@ -365,7 +381,7 @@ while(count!=len(assembly)):
         else:
             writebin(bineq + '\n')
     
-    elif opco in ["0110111","0010111","1101111"]:
+    if opco in ["0110111","0010111","1101111"]:
         bineq=imm(inst[2],opco)+register_code(inst[1])+opco
         if 'error'in bineq:
             writebin('Invalid Register Name')
@@ -376,7 +392,7 @@ while(count!=len(assembly)):
         else:
             writebin(bineq + '\n')
 
-    elif opco in ["1100011"] and inst==['beq',"zero","zero","0"]:
+    if opco in ["1100011"] and inst==['beq',"zero","zero","0"]:
         x,y=imm(inst[3],opco)
         bineq=x+register_code(inst[2])+register_code(inst[1])+ funct3(inst[0])+y+opco
         if 'error'in bineq:
@@ -388,10 +404,10 @@ while(count!=len(assembly)):
         else:
             writebin(bineq)       
 
-    elif inst==["beq","zero","zero","0"] and count==(len(assembly)):
+    if inst==["beq","zero","zero","0"] and count==(len(assembly)):
         break
     
-    elif inst!=["beq","zero","zero","0"] and count==(len(assembly)):
+    if inst!=["beq","zero","zero","0"] and count==(len(assembly)):
         writebin('Missing Virtual Halt')
         break
     
