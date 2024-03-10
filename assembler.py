@@ -369,6 +369,8 @@ while(count!=len(assembly)):
             writebin('at line', count, 'Invalid Register Name')
             print('at line', count, 'Invalid Register Name')
             break
+        elif count==len(assembly):
+            writebin(bineq)
         else:
             writebin(bineq + '\n')
     
@@ -382,6 +384,8 @@ while(count!=len(assembly)):
             writebin('at line',count,'Invalid Imm Value')
             print('at line',count,'Invalid Imm Value')
             break
+        elif count==len(assembly):
+            writebin(bineq)
         else:
             writebin(bineq + '\n')
 
@@ -396,6 +400,8 @@ while(count!=len(assembly)):
             writebin('at line',count,'Invalid Imm Value')
             print('at line',count,'Invalid Imm Value')
             break
+        elif count==len(assembly):
+            writebin(bineq)
         else:
             writebin(bineq + '\n')
     
@@ -409,6 +415,8 @@ while(count!=len(assembly)):
             writebin('at line',count,'Invalid Imm Value')
             print('at line',count,'Invalid Imm Value')
             break
+        elif count==len(assembly):
+            writebin(bineq)
         else:
             writebin(bineq + '\n')
     
@@ -424,6 +432,8 @@ while(count!=len(assembly)):
             writebin('at line',count,'Invalid Imm Value')
             print('at line',count,'Invalid Imm Value')
             break
+        elif count==len(assembly):
+            writebin(bineq)
         else:
             writebin(bineq + '\n')
 
@@ -438,6 +448,8 @@ while(count!=len(assembly)):
             writebin('at line',count,'Invalid Imm Value')
             print('at line',count,'Invalid Imm Value')
             break
+        elif count==len(assembly):
+            writebin(bineq)
         else:
             writebin(bineq + '\n')
     
@@ -451,6 +463,8 @@ while(count!=len(assembly)):
             writebin('at line',count,'Invalid Imm Value')
             print('at line',count,'Invalid Imm Value')
             break
+        elif count==len(assembly):
+            writebin(bineq)
         else:
             writebin(bineq + '\n')
 
@@ -465,8 +479,10 @@ while(count!=len(assembly)):
             writebin('at line',count,'Invalid Imm Value')
             print('at line',count,'Invalid Imm Value')
             break
+        elif count==len(assembly):
+            writebin(bineq)
         else:
-            writebin(bineq)       
+            writebin(bineq + '\n')       
     
     # elif inst==["beq","zero","zero","0"] and count!=(len(assembly)):
     #     writebin('Invalid Virtual Halt')
