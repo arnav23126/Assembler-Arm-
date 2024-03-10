@@ -358,6 +358,12 @@ while(count!=len(assembly)):
     inst=[inst[0]]+inst[1].split(',')
     opco=opcode(inst[0])
     #print(inst)
+
+    if "beq zero,zero,0" not in assembly :
+        writebin('Missing Virtual Halt')
+        print('Missing Virtual Halt')
+        break
+
     if opco=='error':
         writebin('at line', count,'Invalid Instruction Name')
         print('at line', count,'Invalid Instruction Name')
@@ -487,8 +493,3 @@ while(count!=len(assembly)):
     # elif inst==["beq","zero","zero","0"] and count!=(len(assembly)):
     #     writebin('Invalid Virtual Halt')
     #     break
-if "beq zero,zero,0" not in assembly :
-        writebin('Missing Virtual Halt')
-        print('Missing Virtual Halt')
-        break
-
