@@ -1,7 +1,11 @@
 #project decode final working 99% errorless dnd till monday from my side
 #if anyone has interest let me know can make a simulator version tomm
+import sys
+
+file_input = sys.argv[1]
+file_output = sys.argv[2]
 def overwritebin():
-    bincode=open('bineq.txt','+w')
+    bincode=open(file_output,'+w')
     bincode.close()
 
 def readinst(pc):
@@ -37,7 +41,7 @@ def the_ultimate_label_dealer_2point0(warninglabelhazard):
     return warninglabelhazard
         
 def writebin(bineq):
-    bincode=open('bineq.txt','+a')
+    bincode=open(file_output,'+a')
     bincode.write(str(bineq))
     bincode.close()
 
@@ -224,7 +228,7 @@ def imm(num,ty):
         if(Orig<0 and t==p):
             return t;
         if(len(t)>=12):
-            return -1;
+            return '-1';
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -245,7 +249,7 @@ def imm(num,ty):
         if(Orig<0 and t==p):
             return t;
         if(len(t)>=13):
-            return -1;
+            return '-1';
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -272,7 +276,7 @@ def imm(num,ty):
         if(Orig<0 and t==p):
             return t;
         if(len(t)>=32):
-            return -1;
+            return '-1';
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -292,7 +296,7 @@ def imm(num,ty):
         if(Orig<0 and t==p):
             return t;
         if(len(t)>=12):
-            return -1;
+            return '-1';
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -312,7 +316,7 @@ def imm(num,ty):
         if(Orig<0 and t==p):
             return t;
         if(len(t)>=21):
-            return -1;
+            return '-1';
         if(Orig<0):
             t=Cmp2(t);
         elif(Orig>0):
@@ -327,7 +331,7 @@ def imm(num,ty):
         t=t[0]+t[10:20]+t[9]+t[1:9];
         return t;
       
-fname=input('File Name: ')
+fname=file_input
 a=open(fname,'+a')
 teller=a.tell()
 a.close()
