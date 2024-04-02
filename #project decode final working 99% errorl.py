@@ -1,6 +1,5 @@
 import string
 import numpy as np
-
 def overwritebin():
     bincode=open('C:\\Users\\ishit\\c,c++ dsa course\\bineq.txt','+w')
     bincode.close()
@@ -590,3 +589,106 @@ while(count!=len(assembly)):
     if -1 in bineq:
         print("Invalid Instruction")
         break
+
+# simulator starting
+    
+bineq=bineq #the binary containing list 32 elements
+
+op=bineq[25:]
+d=bineq[20:25]
+rsrc2=bineq[12:17]
+rsrc1=bineq[7:12]
+f3=bineq[17:20]
+f7=bineq[:7]
+registers = {
+    [0,0,0,0,0]: ['zero',0], [0,0,0,0,1]: ["ra",0], [0,0,0,1,0]: ["sp",0], [0,0,0,1,1]: ["gp",0],  [0,0,1,0,0]: ["tp",0],
+    [0,0,1,0,1]:[ "t0",0],[0,0,1,1,0]:[ "t1",0] , [0,0,1,1,1]:[ "t2",0], [0,1,0,0,0]:[ "s0",0],[ "s1",0]: [0,1,0,0,1],
+    [0,1,0,1,0]:[ "a0",0], [0,1,0,1,1]:[ "a1",0],[0,1,1,0,0]:[ "a2",0] , [0,1,1,0,1]:[ "a3",0], [0,1,1,1,0]:[ "a4",0],
+   [0,1,1,1,1] :[ "a5",0], [1,0,0,0,0]:[ "a6",0],[1,0,0,0,1]:[ "a7",0] , [1,0,0,1,0]:[ "s2",0],[1,0,0,1,1]:[ "s3",0] ,
+  [1,0,1,0,0]: [ "s4",0] , [1,0,1,0,1]:[ "s5",0],[1,0,1,1,0]:[ "s6",0] ,[1,0,1,1,1]:[ "s7",0] ,[1,1,0,0,0]:[ "s8",0] ,
+   [1,1,0,0,1]:[ "s9",0] , [1,1,0,1,0]:["s10",0] ,[1,1,0,1,1]: ["s11",0] , [1,1,1,0,0]:[ "t3",0], [1,1,1,0,1]:[ "t4",0],
+   [1,1,1,1,0]: [ "t5",0],[1,1,1,1,1]:[ "t6",0] 
+}
+memory={0:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
+
+pc=0
+pcflag=0
+while(pc/4!=len(assembly)):
+    bineq=assembly[pc/4]
+    op=bineq[25:]
+    d=bineq[20:25]
+    rsrc1=bineq[12:17]
+    rsrc2=bineq[7:12]
+    f3=bineq[17:20]
+    f7=bineq[:7]
+    if op==[0 ,1 ,1 ,0 ,0 ,1 ,1]:
+        if f3==[0,0,0]:
+            registers[d][1] = registers[rsrc1][1] + registers[rsrc2][1]
+            pc=pc+4
+    elif op==[0,0,1,0,0,1,1]:
+        if f3==[0,1,1]:
+            if registers[d][0] < dec(f7+rsrc1,'s')+registers[rsrc2][1]:
+                registers[d][0]=1
+            else:
+                registers[d][0]=0
+            pc=pc+4
+    elif op==[1,1,0,0,0,1,1]:
+        if f3==[0,0,0]:
+            if registers[rsrc1][1]==registers[rsrc2][1]:
+                immb=[f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],d[4],f7[1],f7[2],f7[3],f7[4],f7[5],f7[6],d[0],d[1],d[2],d[3],0]
+                pc=pc + dec(immb,'s')
+            else:
+                pc=pc+4
+        elif f3==[0,0,1]:
+            if registers[rsrc1][1]!=registers[rsrc2][1]:
+                immb=[f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],d[4],f7[1],f7[2],f7[3],f7[4],f7[5],f7[6],d[0],d[1],d[2],d[3],0]
+                pc=pc + dec(immb,'s')
+            else:
+                pc=pc+4
+        elif f3==[1,0,1]:
+            if registers[rsrc2][1]>=registers[rsrc1][1]:
+                immb=[f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],d[4],f7[1],f7[2],f7[3],f7[4],f7[5],f7[6],d[0],d[1],d[2],d[3],0]
+                pc=pc + dec(immb,'s')
+            else:
+                pc=pc+4
+        elif f3==[1,0,0]:
+            if registers[rsrc2][1]<registers[rsrc1][1]:
+                immb=[f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],d[4],f7[1],f7[2],f7[3],f7[4],f7[5],f7[6],d[0],d[1],d[2],d[3],0]
+                pc=pc + dec(immb,'s')
+            else:
+                pc=pc+4
+        elif f3==[1,1,0]:
+            if registers[rsrc2][1]<registers[rsrc1][1]:
+                immb=[f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],d[4],f7[1],f7[2],f7[3],f7[4],f7[5],f7[6],d[0],d[1],d[2],d[3],0]
+                pc=pc + dec(immb,'u')
+            else:
+                pc=pc+4
+        else:
+            if registers[rsrc2][1]>=registers[rsrc1][1]:
+                immb=[f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],f7[0],d[4],f7[1],f7[2],f7[3],f7[4],f7[5],f7[6],d[0],d[1],d[2],d[3],0]
+                pc=pc + dec(immb,'u')
+            else:
+                pc=pc+4
+    elif op==[1,1,0,0,1,1,1] :
+        registers[rsrc2][1]=pc+4
+        pc=pc + dec(f7,'u') +registers[rsrc1]
+        if pc%2 != 0:
+            pc=pc-1
+    else:
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
