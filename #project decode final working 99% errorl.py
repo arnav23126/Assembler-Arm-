@@ -622,9 +622,41 @@ while(pc/4!=len(assembly)):
     f3=bineq[17:20]
     f7=bineq[:7]
     if op==[0 ,1 ,1 ,0 ,0 ,1 ,1]:
-        if f3==[0,0,0]:
+        if f3==[0,0,0] and f7 == [0,0,0,0,0,0,0]:  #add
             registers[d][1] = registers[rsrc1][1] + registers[rsrc2][1]
             pc=pc+4
+        elif f3 == [0,0,0] and f7 == [0,1,0,0,0,0,0]: #sub
+            registers[d][1] = registers[rsrc2][1] - registers[rsrc1][1]
+            pc+=4
+        elif f3 == [0,1,0]:
+            if(registers[rsrc2][1] < registers[rsrc1][1]):
+                registers[d][1] = 1
+            pc+=4
+        elif f3 == [0,1,1]:
+            if(abs(registers[rsrc2][1]) < abs(registers[rsrc2][1])): #need to change later with a signed to unsigned converter with abs
+               registers[d][1] = 1
+            pc+=4
+        elif f3 == [1,1,0]:
+            if(bool(registers[rsrc1]) or bool(registers[rsrc2])):
+                registers[d]=1
+            else:
+                registers[d] = 0
+            pc+=4
+        elif f3 == [1,1,1]:
+            if(bool(registers[rsrc1]) and bool(registers[rsrc1])):
+                registers[d] = 1
+            else:
+                registers[d] = 0
+            pc+=4
+        elif f3 == [1,0,0]:
+            if(bool(registers[rsrc1])) == bool(registers[rsrc2]):
+               registers[d] = 0
+            else:
+                registers[d] = 1
+            pc+=4
+        if op == [1,0,1,0,1,1,0]:
+           registers[d][1] = registers[rsrc2][1]*registers[rsrc1][1]
+           pc+=4
     elif op==[0,0,1,0,0,1,1]:
         if f3==[0,1,1]:
             if registers[d][0] < dec(f7+rsrc1,'s')+registers[rsrc2][1]:
