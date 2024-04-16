@@ -439,3 +439,5 @@ while(int(pc/4)!=len(assembly)):
                 registers[d][0]=0
             pc=pc+4
     writestatus(registers)
+
+
