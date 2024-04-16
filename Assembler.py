@@ -255,7 +255,8 @@ while(int(pc/4)!=len(assembly)):
     f3=bineq[17:20]
     f7=bineq[:7]
     i_type_imm=bineq[0:12]
-    
+    if bineq=="00000000000000000000000001100011":
+        break:
     if op=='0110011':
         if f3=='000' and f7 == '0000000':  #add
             registers[d][1] = registers[rsrc1][1] + registers[rsrc2][1]
@@ -324,6 +325,51 @@ while(int(pc/4)!=len(assembly)):
         location_in_hex=bintohex(location_32_bit)
         memory[location_in_hex]=registers[rsrc2][1]
         pc+=4
+    if op=="1100011":
+        if funct3=="000":
+            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm_32=make32bit(imm+"0")
+            if registers[rsrc1][1]==registers[rsrc2][1]:
+                pc=pc+imm
+            else:
+                pc=pc+4
+        elif funct3=="001":
+            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm_32=make32bit(imm+"0")
+            if registers[rsrc1][1]!=registers[rsrc2][1]:
+                pc=pc+imm
+            else:
+                pc=pc+4
+        elif funct3=="100":
+            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm_32=make32bit(imm+"0")
+            if registers[rsrc1][1]<=registers[rsrc2][1]:
+                pc=pc+imm
+            else:
+                pc=pc+4
+        elif funct3=="101":
+            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm_32=make32bit(imm+"0")
+            if registers[rsrc1][1]>=registers[rsrc2][1]:
+                pc=pc+imm
+            else:
+                pc=pc+4
+        elif funct3=="110":
+            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm_32=make32bit(imm+"0")
+            if abs(registers[rsrc1][1])<=abs(registers[rsrc2][1]):
+                pc=pc+imm
+            else:
+                pc=pc+4
+        elif funct3=="111":
+            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm_32=make32bit(imm+"0")
+            if abs(registers[rsrc1][1])>=registers[rsrc2][1]:
+                pc=pc+imm
+            else:
+                pc=pc+4
+        
+    
     if op=="0110111":    #lui
         imm=imm[0:20]+12*"0"
         imm_dec=bin_todec(imm)
@@ -393,4 +439,3 @@ while(int(pc/4)!=len(assembly)):
                 registers[d][0]=0
             pc=pc+4
     writestatus(registers)
-
