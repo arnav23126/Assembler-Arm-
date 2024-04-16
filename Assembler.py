@@ -1,3 +1,9 @@
+def unsigned_binary_to_dec(a): #a will be a string   
+    result=0
+    for i in range(len(a)-1,-1):
+        if(a[i]==1):
+            result+=power(2,i)
+    return result 
 def make32bit(a):
     sign = a[0]
     extension = (32-len(a))*sign
@@ -68,6 +74,14 @@ def bitwise_xor(a,b):
         else:
             result+="1"
     return bin_todec(result)
+def rightshiftlogical(a,b):
+    bin_a = DecToBin_signed(a)
+    if(a<0):
+        bin_a = two_complement(bin_a)
+    bin_a = make32bit(bin_a)
+    for i in range(0,b):
+        bin_a = "0" + bin_a
+    return(bin_todec(bin_a[:32]))
 def overwritebin():
     bincode=open('C:\\Users\\ishit\\c,c++ dsa course\\bineq.txt','+w')
     bincode.close()
@@ -170,7 +184,8 @@ while(int(pc/4)!=len(assembly)):
         elif f3 == '100':   #xor
             registers[d][1]=bitwise_xor(registers[rsrc1][1],registers[rsrc2][1])
             pc+=4
-        elif f3 =='
+        elif f3 =='101':    #srl
+            
         elif f3 == '110':
             if(bool(registers[rsrc1]) or bool(registers[rsrc2])):
                 registers[d]=1
