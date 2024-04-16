@@ -1,4 +1,4 @@
-def unsigned_binary_to_dec(a): #a will be a string   
+def unsigned_binary_to_dec(a): #a will be a string containing binary
     result=0
     for i in range(len(a)-1,-1):
         if(a[i]==1):
@@ -23,7 +23,7 @@ def DecToBin_signed(a_passed):
         temp=temp//2
     st=st[::-1]
     return signedbit + st
-def bin_todec(a):
+def bin_todec(a): #Actually signed binary 
     ans = 0
     a_new = ""
     if(a[0]=="1"):
@@ -38,7 +38,7 @@ def bin_todec(a):
     if b[len(b) - 1] == "0":
         return ans
     return -ans
-def two_complement(a_passed):
+def two_complement(a_passed):   #It takes negative number signed binary as input.
     a = a_passed[1:]
     if int(a[1:]) == 0:
         return "1" + a[1:]
@@ -185,7 +185,13 @@ while(int(pc/4)!=len(assembly)):
             registers[d][1]=bitwise_xor(registers[rsrc1][1],registers[rsrc2][1])
             pc+=4
         elif f3 =='101':    #srl
-            
+            b=registers[rsrc2][1]
+            temp_in_sbinary=DecToBin_signed(b)
+            temp_in_2_complement=make32bit(two_complement(temp_in_sbinary))
+            lower_5_bits=temp_in_2_complement[-5:0:-1]
+            lower_5_bits_in_dec=unsigned_binary_to_dec(lower_5_bits)
+            registers[d][1]=rightshiftlogical(registers[rsrc1][1],lower_5_bits_in_dec)
+            pc+=4
         elif f3 == '110':
             if(bool(registers[rsrc1]) or bool(registers[rsrc2])):
                 registers[d]=1
