@@ -314,13 +314,8 @@ while(int(pc/4)!=len(assembly)):
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
         pc=registers[rsrc1[1]]+number
-    elif op=='0110011':    #sw
-        if f3=='011':
-            if registers[d][0] < dec(f7+rsrc1,'s')+registers[rsrc2][1]:
-                registers[d][0]=1
-            else:
-                registers[d][0]=0
-            pc=pc+4
+    if op=="0100011":
+        
     elif op=='1100011':
         if f3=='000':
             if registers[rsrc1][1]==registers[rsrc2][1]:
@@ -368,5 +363,12 @@ while(int(pc/4)!=len(assembly)):
     if op == '1010110':    #mul instruction
            registers[d][1] = registers[rsrc2][1]*registers[rsrc1][1]
            pc+=4
+    if op=='0110011':
+        if f3=='011':
+            if registers[d][0] < dec(f7+rsrc1,'s')+registers[rsrc2][1]:
+                registers[d][0]=1
+            else:
+                registers[d][0]=0
+            pc=pc+4
     writestatus(registers)
 
