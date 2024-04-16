@@ -1,3 +1,73 @@
+def make32bit(a):
+    sign = a[0]
+    extension = (32-len(a))*sign
+    return(extension + a)
+
+def DecToBin_signed(a_passed):
+    a = abs(a_passed)
+    signedbit="0"
+    if(a_passed<0):
+        signedbit = "1"
+    st=""
+    temp=a
+    if(temp==0):
+        return "0"
+    while(temp!=0):
+        st=st+str(temp%2)
+        temp=temp//2
+    st=st[::-1]
+    return signedbit + st
+def bin_todec(a):
+    ans = 0
+    a_new = ""
+    if(a[0]=="1"):
+        a_new = two_complement(a)
+        if(int(a_new[1:]) == 0):
+            a_new = "1" + a_new
+        b = a_new[::-1]
+    else:
+        b= a[::-1]
+    for i in range(0,len(b) - 1):
+        ans+=pow(2,i)*int(b[i])
+    if b[len(b) - 1] == "0":
+        return ans
+    return -ans
+def two_complement(a_passed):
+    a = a_passed[1:]
+    if int(a[1:]) == 0:
+        return "1" + a[1:]
+    b = []
+    for i in range(0,len(a)):
+        if(a[i] == "0"):
+            b.append("1")
+        if(a[i] == "1"):
+            b.append("0")
+    j = len(a) - 1
+    c=""
+    while b[j] == "1":
+        b[j] = "0"
+        j-=1
+    b[j] = "1"
+    for i in range(0,len(b)):
+        c=c+b[i]
+    c="1" + c
+    return c
+def bitwise_xor(a,b):
+    bin_a = DecToBin_signed(a)
+    bin_b = DecToBin_signed(b)
+    if(a<0):
+        bin_a = two_complement(bin_a)
+    if(b<0):
+        bin_b = two_complement(bin_b)
+    bin_a = make32bit(bin_a)
+    bin_b = make32bit(bin_b)
+    result = ""
+    for i in range(0,len(bin_a)):
+        if(bin_a[i] == bin_b[i]):
+            result+="0"
+        else:
+            result+="1"
+    return bin_todec(result)
 def overwritebin():
     bincode=open('C:\\Users\\ishit\\c,c++ dsa course\\bineq.txt','+w')
     bincode.close()
@@ -78,31 +148,29 @@ while(int(pc/4)!=len(assembly)):
             registers[d][1] = registers[rsrc1][1] + registers[rsrc2][1]
             pc=pc+4
         elif f3 == '000' and f7 == '0100000': #sub
-            registers[d][1] = registers[rsrc1][1] - registers[rsrc2][1]   #Before changing anythion on this line contact harshit
+            registers[d][1] = registers[rsrc1][1] - registers[rsrc2][1]   #Before changing anything on this line contact harshit
             pc+=4
-        elif f3 == '001': #sll
+        elif f3 == '001': #sll  Harshit ot sure
             d=dec(ito2(registers[rsrc2][1],32)[27:],"u")
             a=ito2(registers[rsrc1][1],32)[:32-d] + "0"*d
             registers[d][1]=dec(a,"s")
             pc+=4
-        elif f3 == '010':
-            if(registers[rsrc2][1] < registers[rsrc1][1]):
+        elif f3 == '010':#slt
+            if(registers[rsrc1][1] < registers[rsrc2][1]):    #Before changing anything on this line contact harshit
                 registers[d][1] = 1
             else:
                 registers[d][1] = 0
             pc+=4
-        elif f3 == '011':
+        elif f3 == '011':  #sltu   Harshit not sure
             if(dec(ito2(registers[rsrc2][1],32),'u') < dec(ito2(registers[rsrc2][1],32),'u')): #need to change later with a signed to unsigned converter with abs
                 registers[d][1] = 1
             else:
                 registers[d][1] = 0
             pc+=4
-        elif f3 == '100':
-            if(bool(registers[rsrc1])) == bool(registers[rsrc2]):
-               registers[d] = 0
-            else:
-                registers[d] = 1
+        elif f3 == '100':   #xor
+            registers[d][1]=bitwise_xor(registers[rsrc1][1],registers[rsrc2][1])
             pc+=4
+        elif f3 =='
         elif f3 == '110':
             if(bool(registers[rsrc1]) or bool(registers[rsrc2])):
                 registers[d]=1
