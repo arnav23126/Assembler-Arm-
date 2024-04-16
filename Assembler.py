@@ -74,6 +74,22 @@ def bitwise_xor(a,b):
         else:
             result+="1"
     return bin_todec(result)
+def bitwise_or(a,b):
+    bin_a = DecToBin_signed(a)
+    bin_b = DecToBin_signed(b)
+    if(a<0):
+        bin_a = two_complement(bin_a)
+    if(b<0):
+        bin_b = two_complement(bin_b)
+    bin_a = make32bit(bin_a)
+    bin_b = make32bit(bin_b)
+    result = ""
+    for i in range(0, len(bin_a)):
+        if bin_a[i] == "1" or bin_b[i] == "1":
+            result+="1"
+        else:
+            result+="0"
+    return bin_todec(result)
 def rightshiftlogical(a,b):
     bin_a = DecToBin_signed(a)
     if(a<0):
@@ -192,17 +208,11 @@ while(int(pc/4)!=len(assembly)):
             lower_5_bits_in_dec=unsigned_binary_to_dec(lower_5_bits)
             registers[d][1]=rightshiftlogical(registers[rsrc1][1],lower_5_bits_in_dec)
             pc+=4
-        elif f3 == '110':
-            if(bool(registers[rsrc1]) or bool(registers[rsrc2])):
-                registers[d]=1
-            else:
-                registers[d] = 0
+        elif f3 == '110':    #or
+            registers[d][1]=bitwise_or(registers[rsrc1][1],registers[rsrc2][1])
             pc+=4
-        elif f3 == '111':
-            if(bool(registers[rsrc1]) and bool(registers[rsrc1])):
-                registers[d] = 1
-            else:
-                registers[d] = 0
+        elif f3 == '111':   #and
+            registers[d][1]=bitwise_and(registers[rsrc1][1],registers[rsrc2][1])
             pc+=4
     if op == '1010110':
            registers[d][1] = registers[rsrc2][1]*registers[rsrc1][1]
