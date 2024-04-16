@@ -16,6 +16,36 @@ def bintohex(a):  #a must be string and 32 bit in length
         else:
             c+=dict[b]
     return c
+def signed32bit(a):
+    if a[0] == "1":
+        return "1" + "0"*(32-len(a)) + a[1:]
+    if a[0] == "0":
+        return "0"*(32-len(a)) + a[1:]
+
+
+def final_two_complement(var):             #Use this to find 2's complement of a decimal number. It will give 32 bit result always.
+    a_passed = signed32bit(DecToBin_signed(var))
+    if(a_passed[0] == "0"):
+        return a_passed
+    a = a_passed[1:]
+    if int(a[1:]) == 0:
+        return "1" + a[1:]
+    b = []
+    for i in range(0,len(a)):
+        if(a[i] == "0"):
+            b.append("1")
+        if(a[i] == "1"):
+            b.append("0")
+    j = len(a) - 1
+    c=""
+    while b[j] == "1":
+        b[j] = "0"
+        j-=1
+    b[j] = "1"
+    for i in range(0,len(b)):
+        c=c+b[i]
+    c="1" + c
+    return c
 
 def unsigned_binary_to_dec(a): #a will be a string containing binary
     result=0
@@ -270,16 +300,19 @@ while(int(pc/4)!=len(assembly)):
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
         location=registers[rsrc1]+number
-
-    
+        location_32_bit=final_two_complement(location)
+        location_in_hex=bintohex(location_32_bit)
+        registers[d][1]=memory[location_in_hex]
+        pc+=4
     if op=="0010011":    #addi
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
         registers[d][1]=registers[rsrc1][1]+number
+    if op=="1100111":    #jalr
         
-    if op == '1010110':
-           registers[d][1] = registers[rsrc2][1]*registers[rsrc1][1]
-           pc+=4
+        
+        
+    
     elif op=='0110011':
         if f3=='011':
             if registers[d][0] < dec(f7+rsrc1,'s')+registers[rsrc2][1]:
@@ -331,5 +364,8 @@ while(int(pc/4)!=len(assembly)):
             pc=pc-1
     else:
         pass
+    if op == '1010110':    #mul instruction
+           registers[d][1] = registers[rsrc2][1]*registers[rsrc1][1]
+           pc+=4
     writestatus(registers)
 
