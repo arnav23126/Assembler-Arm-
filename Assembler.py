@@ -255,6 +255,7 @@ while(int(pc/4)!=len(assembly)):
     f3=bineq[17:20]
     f7=bineq[:7]
     i_type_imm=bineq[0:12]
+    
     if op=='0110011':
         if f3=='000' and f7 == '0000000':  #add
             registers[d][1] = registers[rsrc1][1] + registers[rsrc2][1]
@@ -314,8 +315,29 @@ while(int(pc/4)!=len(assembly)):
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
         pc=registers[rsrc1[1]]+number
-    if op=="0100011":
-        
+    if op=="0100011":    #sw
+        imm=bineq[0:7]+bineq[20:25]
+        imm_i_32_bit=make32bit(i_type_imm)
+        number=bin_todec(imm_i_32_bit)
+        location=registers[rsrc1]+number
+        location_32_bit=final_two_complement(location)
+        location_in_hex=bintohex(location_32_bit)
+        memory[location_in_hex]=registers[rsrc2][1]
+        pc+=4
+    if op=="0110111":    #lui
+        imm=imm[0:20]+12*"0"
+        imm_dec=bin_todec(imm)
+        registers[d][1]=imm_dec
+    if op=="0010111":
+        imm=imm[0:20]+12*"0"
+        imm_dec=bin_todec(imm)
+        pc=pc+imm_dec
+    if op=="1101111":
+        registers[d][1]=pc+4
+        imm=bineq[0]+bineq[12:20]+bineq[11]+bineq[1:11]+"0"
+        imm_i_32_bit=make32bit(i_type_imm)
+        number=bin_todec(imm)
+        pc=pc+number
     elif op=='1100011':
         if f3=='000':
             if registers[rsrc1][1]==registers[rsrc2][1]:
