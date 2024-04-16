@@ -78,7 +78,7 @@ while(int(pc/4)!=len(assembly)):
             registers[d][1] = registers[rsrc1][1] + registers[rsrc2][1]
             pc=pc+4
         elif f3 == '000' and f7 == '0100000': #sub
-            registers[d][1] = registers[rsrc2][1] - registers[rsrc1][1]
+            registers[d][1] = registers[rsrc1][1] - registers[rsrc2][1]   #Before changing anythion on this line contact harshit
             pc+=4
         elif f3 == '001': #sll
             d=dec(ito2(registers[rsrc2][1],32)[27:],"u")
