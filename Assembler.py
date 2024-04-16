@@ -1,3 +1,22 @@
+def bin_to_hexhelper(a):
+    num = 0
+    b = a[::-1]
+    for i in range(0,len(b)):
+        num+=pow(2,i)*int(b[i])
+    return str(num)
+
+
+def bintohex(a):  #a must be string and 32 bit in length
+    c=""
+    dict = {"1111":'f',"1110":"e","1101":"d","1100":"c","1011":"b","1010":"a"}
+    for i in range(8):
+        b = a[i*4:(i+1)*4]
+        if b not in dict:
+            c+=bin_to_hexhelper(b)
+        else:
+            c+=dict[b]
+    return c
+
 def unsigned_binary_to_dec(a): #a will be a string containing binary
     result=0
     for i in range(len(a)-1,-1):
@@ -23,7 +42,7 @@ def DecToBin_signed(a_passed):
         temp=temp//2
     st=st[::-1]
     return signedbit + st
-def bin_todec(a): #Actually signed binary 
+def bin_todec(a): #Actually 2's complement binary
     ans = 0
     a_new = ""
     if(a[0]=="1"):
@@ -38,7 +57,7 @@ def bin_todec(a): #Actually signed binary
     if b[len(b) - 1] == "0":
         return ans
     return -ans
-def two_complement(a_passed):   #It takes negative number signed binary as input.
+def two_complement(a_passed):   #Dont use this for 2's complement finding just let it be in other functions
     a = a_passed[1:]
     if int(a[1:]) == 0:
         return "1" + a[1:]
@@ -205,6 +224,7 @@ while(int(pc/4)!=len(assembly)):
     rsrc2=bineq[7:12]
     f3=bineq[17:20]
     f7=bineq[:7]
+    i_type_imm=bineq[0:12]
     if op=='0110011':
         if f3=='000' and f7 == '0000000':  #add
             registers[d][1] = registers[rsrc1][1] + registers[rsrc2][1]
@@ -246,6 +266,17 @@ while(int(pc/4)!=len(assembly)):
         elif f3 == '111':   #and
             registers[d][1]=bitwise_and(registers[rsrc1][1],registers[rsrc2][1])
             pc+=4
+    if op=="000011":#lw
+        imm_i_32_bit=make32bit(i_type_imm)
+        number=bin_todec(imm_i_32_bit)
+        location=registers[rsrc1]+number
+
+    
+    if op=="0010011":    #addi
+        imm_i_32_bit=make32bit(i_type_imm)
+        number=bin_todec(imm_i_32_bit)
+        registers[d][1]=registers[rsrc1][1]+number
+        
     if op == '1010110':
            registers[d][1] = registers[rsrc2][1]*registers[rsrc1][1]
            pc+=4
