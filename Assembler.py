@@ -308,12 +308,13 @@ while(int(pc/4)!=len(assembly)):
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
         registers[d][1]=registers[rsrc1][1]+number
+        pc+=4
     if op=="1100111":    #jalr
-        
-        
-        
-    
-    elif op=='0110011':
+        registers[d][1]=pc+4
+        imm_i_32_bit=make32bit(i_type_imm)
+        number=bin_todec(imm_i_32_bit)
+        pc=registers[rsrc1[1]]+number
+    elif op=='0110011':    #sw
         if f3=='011':
             if registers[d][0] < dec(f7+rsrc1,'s')+registers[rsrc2][1]:
                 registers[d][0]=1
