@@ -1,5 +1,6 @@
-file_input = 'C:\\Users\\ishit\\c,c++ dsa course\\ascode.txt'
-file_output ='C:\\Users\\ishit\\c,c++ dsa course\\yes.txt' 
+import system 
+file_input = sys.arvg[1]
+file_output =sys.argv[2] 
 def bitwise_and(a,b):
     bin_a = DecToBin_signed(a)
     bin_b = DecToBin_signed(b)
@@ -179,11 +180,8 @@ def readinst(pc):
 def ito2(n,b):
     mask= (1<<b)-1
     return"{:0{}b}".format(n & mask, b)
-def dec(imm,str):
-    if str=="s":
-        return ((-1)**int(imm[0]) + int(imm[1:],2) - 2**(31*int(imm[0])))
-    else:
-        return (int(imm,2))
+def dec(imm):
+    return (int(imm,2))
 
 def writestatus(reg,pc):
 
@@ -224,7 +222,6 @@ while (True):
         assembly.append(k)
 a.close()
 overwritebin()
-print(assembly)
 
 # simulator starting
 registers = {
@@ -272,7 +269,6 @@ memory={'00010000':0,
 pc=0
 while((pc//4) < len(assembly)+1):
     bineq=assembly[int(pc/4)]#extracting the instruction
-    print(bineq)
     op=bineq[25:]#opcode
     d=bineq[20:25]
     # can be either immediate or destination
@@ -281,7 +277,7 @@ while((pc//4) < len(assembly)+1):
     f3=bineq[17:20]
     f7=bineq[:7]
     i_type_imm=bineq[0:12]
-    print(pc)
+    
     if bineq=="00000000000000000000000001100011":
         writestatus(registers,pc)
         break
@@ -295,10 +291,10 @@ while((pc//4) < len(assembly)+1):
             pc+=4
         elif f3 == '001': #sll  Harshit ot sure
            
-            d1=dec(ito2(registers[rsrc2][1],32)[27:],"u")
+            d1=dec(ito2(registers[rsrc2][1],32)[27:])
             a=ito2(registers[rsrc1][1],32)[d1:] + "0"*d1
 
-            registers[d][1]=dec(a,"s")
+            registers[d][1]=bin_todec(a)
             pc+=4
         elif f3 == '010':#slt
             if(registers[rsrc1][1] < registers[rsrc2][1]):    #Before changing anything on this line contact harshit
@@ -307,7 +303,7 @@ while((pc//4) < len(assembly)+1):
             #     registers[d][1] = 0
             pc+=4
         elif f3 == '011':  #sltu   Harshit not sure
-            if(dec(ito2(registers[rsrc2][1],32),'u') < dec(ito2(registers[rsrc2][1],32),'u')): #need to change later with a signed to unsigned converter with abs
+            if(dec(ito2(registers[rsrc2][1],32)) < dec(ito2(registers[rsrc2][1],32))): #need to change later with a signed to unsigned converter with abs
                 registers[d][1] = 1
             # else:
             #     registers[d][1] = 0
@@ -354,7 +350,7 @@ while((pc//4) < len(assembly)+1):
         writestatus(registers,str(pc))
     if op=="0100011":    #sw
         tmp=f7+d
-        tmp1=dec(tmp,"s") + registers[rsrc1][1]
+        tmp1=bin_todec(tmp) + registers[rsrc1][1]
         tmp2=registers[rsrc2][1]
         if tmp1%4!=0:
             tmp1=tmp1 - tmp1%4
@@ -367,8 +363,10 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]==registers[rsrc2][1]:
                 
-                pc=pc+dec(imm,"s")
+                pc=pc+bin_todec(imm_32)
                 writestatus(registers,pc)
+                if pc%4!=0:
+                    pc=pc - pc%4
             else:
                 
                 pc=pc+4
@@ -377,9 +375,11 @@ while((pc//4) < len(assembly)+1):
             imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]!=registers[rsrc2][1]:
-                pc=pc+dec(imm_32,"s")
+                pc=pc+bin_todec(imm_32)
                 print(pc)
                 writestatus(registers,pc)
+                if pc%4!=0:
+                    pc=pc - pc%4
             else:
                 
                 pc=pc+4
@@ -389,8 +389,10 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]<=registers[rsrc2][1]:
                 
-                pc=pc+dec(imm,"s")
+                pc=pc+bin_todec(imm_32)
                 writestatus(registers,pc)
+                if pc%4!=0:
+                    pc=pc - pc%4
             else:
                 
                 pc=pc+4
@@ -400,8 +402,10 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]>=registers[rsrc2][1]:
                 
-                pc=pc+dec(imm,"s")
+                pc=pc+bin_todec(imm_32)
                 writestatus(registers,pc)
+                if pc%4!=0:
+                    pc=pc - pc%4
             else:
                 
                 pc=pc+4
@@ -411,8 +415,10 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])<=abs(registers[rsrc2][1]):
                 
-                pc=pc+dec(imm,"s")
+                pc=pc+bin_todec(imm_32)
                 writestatus(registers,pc)
+                if pc%4!=0:
+                    pc=pc - pc%4
             else:
                 
                 pc=pc+4
@@ -422,8 +428,10 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])>=registers[rsrc2][1]:
                 
-                pc=pc+dec(imm,"s")
+                pc=pc+bin_todec(imm_32)
                 writestatus(registers,pc)
+                if pc%4!=0:
+                    pc=pc - pc%4
             else:
                 
                 pc=pc+4
