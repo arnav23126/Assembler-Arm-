@@ -182,7 +182,7 @@ def writestatus(reg):
 def writememory(mem):
     a=open("C:\\Users\\ishit\\c,c++ dsa course\\bineq.txt","+a")
     for i in mem.keys():
-        a.write('0b'*ito2(mem[i][1],32)+"\n")
+        a.write("0x"+i+":"+'0b'*ito2(mem[i][1],32)+"\n")
     a.close()
 
         
