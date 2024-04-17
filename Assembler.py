@@ -168,14 +168,18 @@ def writestatus(reg):
     for i in reg.keys():
         
         if (cnt%5)==0:
-            
             a.write('0b'+ito2(reg[i][1],32)+"\n")
-        elif cnt==32:
+        elif cnt==33:
             a.write('0b'+ito2(reg[i][1],32)+"\n")
         else:
             a.write('0b'+ito2(reg[i][1],32)+" ")
         cnt+=1
     a.close
+def writememory(mem):
+    a=open("C:\\Users\\ishit\\c,c++ dsa course\\bineq.txt","+a")
+    for i in mem.keys():
+        a.write('0b'*ito2(mem[i][1],32)+"\n")
+    a.close()
 
         
 
@@ -197,7 +201,6 @@ while (True):
     else: 
         assembly.append(k)
 a.close()
-print(assembly)
 overwritebin()
 
 
@@ -256,6 +259,7 @@ while(int(pc/4)!=len(assembly)):
     f7=bineq[:7]
     i_type_imm=bineq[0:12]
     if bineq=="00000000000000000000000001100011":
+        writememory(memory)
         break:
     if op=='0110011':
         if f3=='000' and f7 == '0000000':  #add
@@ -438,5 +442,6 @@ while(int(pc/4)!=len(assembly)):
             pc=pc+4
     """
     writestatus(registers)
+overwritebin()
 
 
