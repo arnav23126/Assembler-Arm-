@@ -1,5 +1,5 @@
 file_input = 'C:\\Users\\ishit\\c,c++ dsa course\\ascode.txt'
-file_output ='C:\\Users\\ishit\\c,c++ dsa course\\bineq.txt' 
+file_output ='C:\\Users\\ishit\\c,c++ dsa course\\yes.txt' 
 def bitwise_and(a,b):
     bin_a = DecToBin_signed(a)
     bin_b = DecToBin_signed(b)
@@ -200,7 +200,7 @@ def writestatus(reg,pc):
 def writememory(mem):
     a=open(file_output,"+a")
     for i in mem.keys():
-        a.write(i+':0b'+ito2(mem[i],32)+"\n")
+        a.write("0x"+i+':0b'+ito2(mem[i],32)+"\n")
     a.close()
 
         
@@ -236,46 +236,46 @@ registers = {
    '11001':[ "s9",0] , '11010':["s10",0] ,'11011': ["s11",0] , '11100':[ "t3",0], '11101':[ "t4",0],
    '11110': [ "t5",0],'11111':[ "t6",0] 
 }
-memory={'0x00010000':0,
-'0x00010004':0,
-'0x00010008':0,
-'0x0001000c':0,
-'0x00010010':0,
-'0x00010014':0,
-'0x00010018':0,
-'0x0001001c':0,
-'0x00010020':0,
-'0x00010024':0,
-'0x00010028':0,
-'0x0001002c':0,
-'0x00010030':0,
-'0x00010034':0,
-'0x00010038':0,
-'0x0001003c':0,
-'0x00010040':0,
-'0x00010044':0,
-'0x00010048':0,
-'0x0001004c':0,
-'0x00010050':0,
-'0x00010054':0,
-'0x00010058':0,
-'0x0001005c':0,
-'0x00010060':0,
-'0x00010064':0,
-'0x00010068':0,
-'0x0001006c':0,
-'0x00010070':0,
-'0x00010074':0,
-'0x00010078':0,
-'0x0001007c':0,
+memory={'00010000':0,
+'00010004':0,
+'00010008':0,
+'0001000c':0,
+'00010010':0,
+'00010014':0,
+'00010018':0,
+'0001001c':0,
+'00010020':0,
+'00010024':0,
+'00010028':0,
+'0001002c':0,
+'00010030':0,
+'00010034':0,
+'00010038':0,
+'0001003c':0,
+'00010040':0,
+'00010044':0,
+'00010048':0,
+'0001004c':0,
+'00010050':0,
+'00010054':0,
+'00010058':0,
+'0001005c':0,
+'00010060':0,
+'00010064':0,
+'00010068':0,
+'0001006c':0,
+'00010070':0,
+'00010074':0,
+'00010078':0,
+'0001007c':0,
 }
 pc=4
-print(pc//4)
-while((pc//4) < len(assembly)):
+while((pc//4) < len(assembly)+1):
     bineq=assembly[int(pc/4)-1]#extracting the instruction
+    print(bineq)
     op=bineq[25:]#opcode
     d=bineq[20:25]
-    print(d)# can be either immediate or destination
+    # can be either immediate or destination
     rsrc1=bineq[12:17]
     rsrc2=bineq[7:12]
     f3=bineq[17:20]
@@ -283,18 +283,21 @@ while((pc//4) < len(assembly)):
     i_type_imm=bineq[0:12]
     print(pc)
     if bineq=="00000000000000000000000001100011":
-        writememory(memory)
+        writestatus(registers,pc)
         break
     if op=='0110011':
         if f3=='000' and f7 == '0000000':  #add
+            
             registers[d][1] = registers[rsrc1][1] + registers[rsrc2][1]
             pc=pc+4
         elif f3 == '000' and f7 == '0100000': #sub
             registers[d][1] = registers[rsrc1][1] - registers[rsrc2][1]   #Before changing anything on this line contact harshit
             pc+=4
         elif f3 == '001': #sll  Harshit ot sure
+           
             d1=dec(ito2(registers[rsrc2][1],32)[27:],"u")
-            a=ito2(registers[rsrc1][1],32)[:32-d1] + "0"*d1
+            a=ito2(registers[rsrc1][1],32)[d1:] + "0"*d1
+
             registers[d][1]=dec(a,"s")
             pc+=4
         elif f3 == '010':#slt
@@ -328,13 +331,11 @@ while((pc//4) < len(assembly)):
             pc+=4
         writestatus(registers,str(pc-4))
     if op=="0000011":#lw
-        print(d)
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
         location=registers[rsrc1][1]+number
         location_32_bit=final_two_complement(location)
         location_in_hex=bintohex(location_32_bit)
-        print(location_in_hex)
         registers[d][1]=memory[location_in_hex]
         pc+=4
         writestatus(registers,str(pc-4))
@@ -362,79 +363,79 @@ while((pc//4) < len(assembly)):
         pc+=4
     if op=="1100011":
         if f3=="000":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]==registers[rsrc2][1]:
-                writestatus(registers,str(pc))
-                pc=pc+imm
+                writestatus(registers,pc)
+                pc=pc+dec(imm,"s")
             else:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+4
         elif f3=="001":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]!=registers[rsrc2][1]:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+imm
             else:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+4
         elif f3=="100":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]<=registers[rsrc2][1]:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+imm
             else:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+4
         elif f3=="101":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]>=registers[rsrc2][1]:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+imm
             else:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+4
         elif f3=="110":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])<=abs(registers[rsrc2][1]):
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+imm
             else:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+4
         elif f3=="111":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])>=registers[rsrc2][1]:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+imm
             else:
-                writestatus(registers,str(pc))
+                writestatus(registers,pc)
                 pc=pc+4
         
     
     if op=="0110111":    #lui
-        imm=imm[0:20]+12*"0"
+        imm=bineq[0:20]+12*"0"
         imm_dec=bin_todec(imm)
         registers[d][1]=imm_dec
-        writestatus(registers,str(pc))
+        writestatus(registers,pc)
         pc+=4
     if op=="0010111":    #auipc
-        imm=imm[0:20]+12*"0"
+        imm=bineq[0:20]+12*"0"
         imm_dec=bin_todec(imm)
         registers[d][1]=pc+imm_dec
-        writestatus(registers,str(pc))
+        writestatus(registers,pc)
         pc+=4
     if op=="1101111":
         registers[d][1]=pc+4
         imm=bineq[0]+bineq[12:20]+bineq[11]+bineq[1:11]+"0"
         imm_i_32_bit=make32bit(imm)
         number=bin_todec(imm_i_32_bit)
-        writestatus(registers,str(pc))
+        writestatus(registers,pc)
         pc=pc+number
     """ 
     elif op=='1100011':
@@ -487,5 +488,5 @@ while((pc//4) < len(assembly)):
                 registers[d][0]=0
             pc=pc+4
     """
-
-
+writestatus(registers,pc)
+writememory(memory)
