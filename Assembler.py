@@ -20,7 +20,7 @@ def signed32bit(a):
     if a[0] == "1":
         return "1" + "0"*(32-len(a)) + a[1:]
     if a[0] == "0":
-        return "0"*(32-len(a)) + a[1:]
+        return "0"+"0"*(32-len(a)) + a[1:]
 
 
 def final_two_complement(var):             #Use this to find 2's complement of a decimal number. It will give 32 bit result always.
