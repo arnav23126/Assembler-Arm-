@@ -1,4 +1,4 @@
-import system 
+import sys
 file_input = sys.arvg[1]
 file_output =sys.argv[2] 
 def bitwise_and(a,b):
