@@ -189,23 +189,23 @@ def writememory(mem):
 
 
 
-# fname='C:\\Users\\ishit\\c,c++ dsa course\\ascode.txt'
-# a=open(fname,'+a')
-# teller=a.tell()
-# a.close()
-# a=open(fname,'+r')
-# assembly=[]
-# while (True):
-#     k=a.readline().strip('\n')
-#     if a.tell()==teller:
-#         assembly.append(k)
-#         break
-#     if k.strip(' ')=='':
-#         continue 
-#     else: 
-#         assembly.append(k)
-# a.close()
-# overwritebin()
+fname='C:\\Users\\ishit\\c,c++ dsa course\\ascode.txt'
+a=open(fname,'+a')
+teller=a.tell()
+a.close()
+a=open(fname,'+r')
+assembly=[]
+while (True):
+    k=a.readline().strip('\n')
+    if a.tell()==teller:
+        assembly.append(k)
+        break
+    if k.strip(' ')=='':
+        continue 
+    else: 
+        assembly.append(k)
+a.close()
+overwritebin()
 
 
 # simulator starting
