@@ -335,42 +335,42 @@ while(int(pc/4)!=len(assembly)):
         pc+=4
     if op=="1100011":
         if funct3=="000":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]==registers[rsrc2][1]:
                 pc=pc+imm
             else:
                 pc=pc+4
         elif funct3=="001":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]!=registers[rsrc2][1]:
                 pc=pc+imm
             else:
                 pc=pc+4
         elif funct3=="100":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]<=registers[rsrc2][1]:
                 pc=pc+imm
             else:
                 pc=pc+4
         elif funct3=="101":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]>=registers[rsrc2][1]:
                 pc=pc+imm
             else:
                 pc=pc+4
         elif funct3=="110":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])<=abs(registers[rsrc2][1]):
                 pc=pc+imm
             else:
                 pc=pc+4
         elif funct3=="111":
-            imm=imm[0]+imm[24]+imm[1:7]+imm[20:24]
+            imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])>=registers[rsrc2][1]:
                 pc=pc+imm
@@ -379,12 +379,12 @@ while(int(pc/4)!=len(assembly)):
         
     
     if op=="0110111":    #lui
-        imm=imm[0:20]+12*"0"
+        imm=bineq[0:20]+12*"0"
         imm_dec=bin_todec(imm)
         registers[d][1]=imm_dec
         pc+=4
     if op=="0010111":    #auipc
-        imm=imm[0:20]+12*"0"
+        imm=bineq[0:20]+12*"0"
         imm_dec=bin_todec(imm)
         registers[d][1]=pc+imm_dec
         pc+=4
