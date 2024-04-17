@@ -364,9 +364,10 @@ while((pc//4) < len(assembly)+1):
             if registers[rsrc1][1]==registers[rsrc2][1]:
                 
                 pc=pc+bin_todec(imm_32)
-                writestatus(registers,pc)
+                
                 if pc%4!=0:
                     pc=pc - pc%4
+                writestatus(registers,pc)
             else:
                 
                 pc=pc+4
@@ -377,9 +378,10 @@ while((pc//4) < len(assembly)+1):
             if registers[rsrc1][1]!=registers[rsrc2][1]:
                 pc=pc+bin_todec(imm_32)
                 print(pc)
-                writestatus(registers,pc)
+                
                 if pc%4!=0:
                     pc=pc - pc%4
+                writestatus(registers,pc)
             else:
                 
                 pc=pc+4
@@ -390,9 +392,10 @@ while((pc//4) < len(assembly)+1):
             if registers[rsrc1][1]<=registers[rsrc2][1]:
                 
                 pc=pc+bin_todec(imm_32)
-                writestatus(registers,pc)
                 if pc%4!=0:
                     pc=pc - pc%4
+                writestatus(registers,pc)
+                
             else:
                 
                 pc=pc+4
@@ -403,9 +406,10 @@ while((pc//4) < len(assembly)+1):
             if registers[rsrc1][1]>=registers[rsrc2][1]:
                 
                 pc=pc+bin_todec(imm_32)
-                writestatus(registers,pc)
+                
                 if pc%4!=0:
                     pc=pc - pc%4
+                writestatus(registers,pc)
             else:
                 
                 pc=pc+4
@@ -416,9 +420,10 @@ while((pc//4) < len(assembly)+1):
             if abs(registers[rsrc1][1])<=abs(registers[rsrc2][1]):
                 
                 pc=pc+bin_todec(imm_32)
-                writestatus(registers,pc)
+                
                 if pc%4!=0:
                     pc=pc - pc%4
+                writestatus(registers,pc)
             else:
                 
                 pc=pc+4
@@ -429,9 +434,10 @@ while((pc//4) < len(assembly)+1):
             if abs(registers[rsrc1][1])>=registers[rsrc2][1]:
                 
                 pc=pc+bin_todec(imm_32)
-                writestatus(registers,pc)
+                
                 if pc%4!=0:
                     pc=pc - pc%4
+                writestatus(registers,pc)
             else:
                 
                 pc=pc+4
