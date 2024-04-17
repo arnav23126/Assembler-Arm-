@@ -377,8 +377,8 @@ while((pc//4) < len(assembly)+1):
             imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]!=registers[rsrc2][1]:
-                
-                pc=pc+imm
+                pc=pc+dec(imm_32,"s")
+                print(pc)
                 writestatus(registers,pc)
             else:
                 
@@ -389,7 +389,7 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]<=registers[rsrc2][1]:
                 
-                pc=pc+imm
+                pc=pc+dec(imm,"s")
                 writestatus(registers,pc)
             else:
                 
@@ -400,7 +400,7 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]>=registers[rsrc2][1]:
                 
-                pc=pc+imm
+                pc=pc+dec(imm,"s")
                 writestatus(registers,pc)
             else:
                 
@@ -411,7 +411,7 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])<=abs(registers[rsrc2][1]):
                 
-                pc=pc+imm
+                pc=pc+dec(imm,"s")
                 writestatus(registers,pc)
             else:
                 
@@ -422,7 +422,7 @@ while((pc//4) < len(assembly)+1):
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])>=registers[rsrc2][1]:
                 
-                pc=pc+imm
+                pc=pc+dec(imm,"s")
                 writestatus(registers,pc)
             else:
                 
