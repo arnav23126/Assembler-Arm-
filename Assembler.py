@@ -1,3 +1,7 @@
+def overwritebin():
+    bincode=open(file_output,'+w')
+    bincode.close()
+
 def bin_to_hexhelper(a):
     num = 0
     b = a[::-1]
