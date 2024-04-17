@@ -247,9 +247,9 @@ memory={'00010000':0,
 pc=0
 pcflag=0
 while(int(pc/4)!=len(assembly)):
-    bineq=assembly[int(pc/4)]
-    op=bineq[25:]
-    d=bineq[20:25]
+    bineq=assembly[int(pc/4)]#extracting the instruction
+    op=bineq[25:]#opcode
+    d=bineq[20:25]# can be either immediate or destination
     rsrc1=bineq[12:17]
     rsrc2=bineq[7:12]
     f3=bineq[17:20]
@@ -374,16 +374,19 @@ while(int(pc/4)!=len(assembly)):
         imm=imm[0:20]+12*"0"
         imm_dec=bin_todec(imm)
         registers[d][1]=imm_dec
-    if op=="0010111":
+        pc+=4
+    if op=="0010111":    #auipc
         imm=imm[0:20]+12*"0"
         imm_dec=bin_todec(imm)
-        pc=pc+imm_dec
+        registers[d][1]=pc+imm_dec
+        pc+=4
     if op=="1101111":
         registers[d][1]=pc+4
         imm=bineq[0]+bineq[12:20]+bineq[11]+bineq[1:11]+"0"
-        imm_i_32_bit=make32bit(i_type_imm)
-        number=bin_todec(imm)
+        imm_i_32_bit=make32bit(imm)
+        number=bin_todec(imm_i_32_bit)
         pc=pc+number
+       """ 
     elif op=='1100011':
         if f3=='000':
             if registers[rsrc1][1]==registers[rsrc2][1]:
@@ -421,13 +424,8 @@ while(int(pc/4)!=len(assembly)):
                 pc=pc + dec(immb,'u')
             else:
                 pc=pc+4
-    elif op=='1100111' :
-        registers[rsrc2][1]=pc+4
-        pc=pc + dec(f7,'u') +registers[rsrc1]
-        if pc%2 != 0:
-            pc=pc-1
-    else:
-        pass
+    
+   
     if op == '1010110':    #mul instruction
            registers[d][1] = registers[rsrc2][1]*registers[rsrc1][1]
            pc+=4
@@ -438,6 +436,7 @@ while(int(pc/4)!=len(assembly)):
             else:
                 registers[d][0]=0
             pc=pc+4
+    """
     writestatus(registers)
 
 
