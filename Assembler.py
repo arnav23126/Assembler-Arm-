@@ -269,9 +269,9 @@ memory={'00010000':0,
 '00010078':0,
 '0001007c':0,
 }
-pc=4
+pc=0
 while((pc//4) < len(assembly)+1):
-    bineq=assembly[int(pc/4)-1]#extracting the instruction
+    bineq=assembly[int(pc/4)]#extracting the instruction
     print(bineq)
     op=bineq[25:]#opcode
     d=bineq[20:25]
@@ -329,7 +329,7 @@ while((pc//4) < len(assembly)+1):
         elif f3 == '111':   #and
             registers[d][1]=bitwise_and(registers[rsrc1][1],registers[rsrc2][1])
             pc+=4
-        writestatus(registers,str(pc-4))
+        writestatus(registers,str(pc))
     if op=="0000011":#lw
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
@@ -338,105 +338,120 @@ while((pc//4) < len(assembly)+1):
         location_in_hex=bintohex(location_32_bit)
         registers[d][1]=memory[location_in_hex]
         pc+=4
-        writestatus(registers,str(pc-4))
+        writestatus(registers,str(pc))
     if op=="0010011":    #addi
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
         registers[d][1]=registers[rsrc1][1]+number
-        writestatus(registers,str(pc))
+        
         pc+=4
+        writestatus(registers,str(pc))
     if op=="1100111":    #jalr
         registers[d][1]=pc+4
         imm_i_32_bit=make32bit(i_type_imm)
         number=bin_todec(imm_i_32_bit)
-        writestatus(registers,str(pc))
         pc=registers[rsrc1[1]]+number
-    if op=="0100011":    #sw
-        imm=bineq[0:7]+bineq[20:25]
-        imm_i_32_bit=make32bit(i_type_imm)
-        number=bin_todec(imm_i_32_bit)
-        location=registers[rsrc1][1]+number
-        location_32_bit=final_two_complement(location)
-        location_in_hex=bintohex(location_32_bit)
-        memory[location_in_hex]=registers[rsrc2][1]
         writestatus(registers,str(pc))
-        pc+=4
+    if op=="0100011":    #sw
+        tmp=f7+d
+        tmp1=dec(tmp,"s") + registers[rsrc1][1]
+        tmp2=registers[rsrc2][1]
+        if tmp1%4!=0:
+            tmp1=tmp1 - tmp1%4
+        memory["000"+ str(hex(tmp1))[2:]]=tmp2
+        pc=pc+4
+        writestatus(registers,pc)
     if op=="1100011":
         if f3=="000":
             imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]==registers[rsrc2][1]:
-                writestatus(registers,pc)
+                
                 pc=pc+dec(imm,"s")
-            else:
                 writestatus(registers,pc)
+            else:
+                
                 pc=pc+4
+                writestatus(registers,pc)
         elif f3=="001":
             imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]!=registers[rsrc2][1]:
-                writestatus(registers,pc)
+                
                 pc=pc+imm
-            else:
                 writestatus(registers,pc)
+            else:
+                
                 pc=pc+4
+                writestatus(registers,pc)
         elif f3=="100":
             imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]<=registers[rsrc2][1]:
-                writestatus(registers,pc)
+                
                 pc=pc+imm
-            else:
                 writestatus(registers,pc)
+            else:
+                
                 pc=pc+4
+                writestatus(registers,pc)
         elif f3=="101":
             imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if registers[rsrc1][1]>=registers[rsrc2][1]:
-                writestatus(registers,pc)
+                
                 pc=pc+imm
-            else:
                 writestatus(registers,pc)
+            else:
+                
                 pc=pc+4
+                writestatus(registers,pc)
         elif f3=="110":
             imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])<=abs(registers[rsrc2][1]):
-                writestatus(registers,pc)
+                
                 pc=pc+imm
-            else:
                 writestatus(registers,pc)
+            else:
+                
                 pc=pc+4
+                writestatus(registers,pc)
         elif f3=="111":
             imm=bineq[0]+bineq[24]+bineq[1:7]+bineq[20:24]
             imm_32=make32bit(imm+"0")
             if abs(registers[rsrc1][1])>=registers[rsrc2][1]:
-                writestatus(registers,pc)
+                
                 pc=pc+imm
-            else:
                 writestatus(registers,pc)
+            else:
+                
                 pc=pc+4
+                writestatus(registers,pc)
         
     
     if op=="0110111":    #lui
         imm=bineq[0:20]+12*"0"
         imm_dec=bin_todec(imm)
         registers[d][1]=imm_dec
-        writestatus(registers,pc)
+        
         pc+=4
+        writestatus(registers,pc)
     if op=="0010111":    #auipc
         imm=bineq[0:20]+12*"0"
         imm_dec=bin_todec(imm)
         registers[d][1]=pc+imm_dec
-        writestatus(registers,pc)
+        
         pc+=4
+        writestatus(registers,pc)
     if op=="1101111":
         registers[d][1]=pc+4
         imm=bineq[0]+bineq[12:20]+bineq[11]+bineq[1:11]+"0"
         imm_i_32_bit=make32bit(imm)
         number=bin_todec(imm_i_32_bit)
-        writestatus(registers,pc)
+        
         pc=pc+number
+        writestatus(registers,pc)
     """ 
     elif op=='1100011':
         if f3=='000':
@@ -488,5 +503,5 @@ while((pc//4) < len(assembly)+1):
                 registers[d][0]=0
             pc=pc+4
     """
-writestatus(registers,pc)
+# writestatus(registers,pc)
 writememory(memory)
