@@ -354,14 +354,20 @@ overwritebin()
 count=0
 bonus_list = ["mul","rst","halt","rvrs"]
 while(count!=len(assembly)):
-    count+=1
     
     inst=readinst(count).split()
     count+=1
-    if inst not in [["rst"],["halt"]]:
+    if inst[0] == "rst":
+        inst = [inst[0]]
+        
+    elif inst[0] == 'halt':
+        inst = [inst[0]]
+        
+    else:
         inst=[inst[0]]+inst[1].split(',')
-    opco=opcode(inst[0])
     
+    opco=opcode(inst[0])
+    #print(inst)
     if inst[0] in bonus_list:
         if inst[0] == "rst":
             opco = '1010101'
@@ -380,31 +386,6 @@ while(count!=len(assembly)):
         writebin('at line', count,'Invalid Instruction Name')
         print('at line', count,'Invalid Instruction Name')
         break
-    if opco=="1011101": #halt
-        bineq=25*"0"+"1011101"
-        if count == len(assembly):
-                writebin(bineq)
-        else:
-                writebin(bineq + '\n')
-    if opco=="1010101":#rst
-        bineq=25*"0"+"1010101"
-        if count == len(assembly):
-                writebin(bineq)
-        else:
-                writebin(bineq + '\n')
-    if opco=="1010110":#mul
-        bineq="0000000"+register_code(inst[3])+register_code(inst[2])+"000"+register_code(inst[1])+"1010110"
-        if count == len(assembly):
-                writebin(bineq)
-        else:
-                writebin(bineq + '\n')
-    if opco=="101111":#rvrs
-        bineq="0000000"+"00000"+register_code(inst[2])+"00000"+register_code(inst[1])+"101111"
-        if count == len(assembly):
-                writebin(bineq)
-        else:
-                writebin(bineq + '\n')
-
     
     if opco == '1010110':
         try:
